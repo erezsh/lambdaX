@@ -87,7 +87,7 @@ class _X(object):
     def __getslice__(self, a,b=None,c=None):
         return self.__apply_bin_func( operator.getslice, a,b,c )
     def in_(self, other):
-        return self.__apply_bin_func( operator.contains, other )
+        return self.__apply_rbin_func( operator.contains, other )
 
     # Arith
     def __add__(self, other):
