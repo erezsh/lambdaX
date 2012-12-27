@@ -69,8 +69,10 @@ class _X(object):
     def __apply_multargs_func(self, func, *args ):
         return _X(func, _Partial(self), *map(_Return,args))
 
-    def __call__(self, arg):
-        return self.__func(*[x(arg) for x in self.__args_to_run])
+    def __call__(self, *args):
+        for arg in args:
+            self = self.__func(*[x(arg) for x in self.__args_to_run])
+        return self
 
     def __getattr__(self, attr):
         return self.__apply_bin_func( getattr, attr )

@@ -39,11 +39,31 @@ def _test_hash():
     assert hash(X._(X)) == hash(X._(X))
     print( "Hash OK!" )
 
+def _test_multiple_args():
+    g = X + 2*X
+    assert g(3,5) == g(3)(5) == 13
+    assert g(5,3) == g(5)(3) == 11
+    g = 2*X + X
+    assert g(3,5) == g(3)(5) == 11
+    assert g(5,3) == g(5)(3) == 13
+    print( "Multiple args OK!" )
+
+def _test_composition():
+    f = X**2 - 1
+    g = f + 2*f
+    assert g(3,5) == 56
+
+    h = g - f + 2
+    assert h(1,2,3) == 0
+
+
 def _test():
     _test_getattr_and_call()
     _test_pickle()
     _test_hash()
     _test_slice()
+    _test_multiple_args()
+    _test_composition()
 
 if __name__ == '__main__':
     _test()
