@@ -84,8 +84,6 @@ class _X(object):
     # Containers
     def __getitem__(self, other):
         return self.__apply_bin_func( operator.getitem, other )
-    def __getslice__(self, a,b=None,c=None):
-        return self.__apply_bin_func( operator.getslice, a,b,c )
     def in_(self, other):
         return self.__apply_rbin_func( operator.contains, other )
 
@@ -138,7 +136,7 @@ class _X(object):
         return self.__apply_rbin_func( operator.or_, other )
     def __rxor__(self, other):
         return self.__apply_rbin_func( operator.xor, other )
-    
+
     def __rshift__(self, other):
         return self.__apply_bin_func( operator.rshift, other )
     def __lshift__(self, other):
@@ -170,43 +168,8 @@ class _X(object):
         if self.__func == identity and self.__args_to_run==(identity,):
             return 'X'
         return 'X:%s%s' % (self.__func.__name__, self.__args_to_run)
-    
+
 
 X = _X(identity, identity)
 
-
-def _test_pickle():
-    import pickle
-    expr = 1 + (X + 3) * 4
-    assert expr(5) == 33
-
-    s = pickle.dumps(expr, 0)
-    expr2 = pickle.loads(s)
-    res = expr2(5)
-    assert res == 33
-
-    s = pickle.dumps(expr, 1)
-    expr2 = pickle.loads(s)
-    res = expr2(5)
-    assert res == 33
-
-    s = pickle.dumps(expr, 2)
-    expr2 = pickle.loads(s)
-    res = expr2(5)
-    assert res == 33
-
-    print "Pickle OK!"
-
-def _test_hash():
-    assert hash(X+1) == hash(X+1)
-    assert hash(X._(X)) == hash(X._(X))
-    print "Hash OK!"
-
-def _test():
-    print "Testing getattr and call...",
-    assert X.upper._()('hello') == 'HELLO'
-    assert X.zfill._(3)('7') == '007'
-    print "OK!"
-    _test_pickle()
-    _test_hash()
 
