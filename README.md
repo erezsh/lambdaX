@@ -1,10 +1,12 @@
+X is a composition class. It's a lambda replacement which is shorter, pickle-able, and cooler.
+
 X has two main features:
 
-    1. It acts as an identity function ( so X(3) == 3, etc. )
-    2. When performing operations on it, it returns a new class that acts as a corresponding function.
+1. It acts as an identity function ( so X(object) == object, etc. )
+2. When performing operations on it, it returns a new class that acts as a corresponding function.
 
-So, evaluating (X+2) will result in an instance of X, that whenever called with an argument, will return that argument plus 2. So:
-    
+So, evaluating (X+2) will result in an instance of X, that whenever called with an argument, will return that argument plus 2:
+
     >>> map( X+2, [1, 2, 3] )
     [3, 4, 5]
 
@@ -15,13 +17,25 @@ So, evaluating (X+2) will result in an instance of X, that whenever called with 
     >>> sorted(l,key=X[-1])
     ['world', 'brave', 'oh', 'new']
 
-These operations can be chained:
+These operations can be chained and composed:
 
     >>> map(2**(X+1), range(10))
     [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
 
-    >>> map( "P" + X[3:]*2 + "!", ["Hello", "Suzzy"] )
-    ['Plolo!', 'Pzyzy!']
+    >>> sqr = X ** 2
+    >>> sqr_sum = sqr + sqr
+    >>> sqr_sum(3, 4)
+    25
+
+    >>> sec_per_min = 60 * X
+    >>> sec_per_hour = 60 * sec_per_min
+    >>> sec_per_day = 24 * sec_per_hour
+    >>> sec_per_day(1)
+    86400
+
+    >>> head, tail = X[0], X[1:]
+    >>> (head(tail))([1,2,3])
+    2
 
 Some operations aren't as smooth:
 
@@ -29,4 +43,8 @@ Some operations aren't as smooth:
     ['USE', 'UNDERSCORE', 'FOR', 'CALLING', 'A', 'FUNCTION']
     >>> filter( X.in_(range(10)), range(4,20,2))
     [4, 6, 8]
+
+## License
+
+[MIT](http://malsup.github.com/mit-license.txt)
 
