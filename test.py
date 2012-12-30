@@ -1,4 +1,4 @@
-from x import X
+from x import X, SameX
 
 def _test_getattr_and_call():
     assert X.upper._()('hello') == 'HELLO'
@@ -56,6 +56,16 @@ def _test_composition():
     h = g - f + 2
     assert h(1,2,3) == 0
 
+def _test_same_x():
+    assert (X + SameX)(1) == 2
+    assert map(X**SameX, range(4)) == map(SameX**X, range(4)) == [1, 1, 4, 27]
+    assert (X+SameX+SameX)('ha') == (SameX+X+SameX)('ha') == (SameX+SameX+X)('ha') == 'hahaha'
+    assert ( (X**SameX) + (X**SameX) )(2, 3) == 2**2 + 3**3
+
+    f1 = (X + 1) * (SameX - 1)
+    f2 = X**2 - 1
+    assert all(f1(x) == f2(x) for x in range(100))
+    print( 'SameX is OK!' )
 
 def _test():
     _test_getattr_and_call()
@@ -64,6 +74,7 @@ def _test():
     _test_slice()
     _test_multiple_args()
     _test_composition()
+    _test_same_x()
 
 if __name__ == '__main__':
     _test()

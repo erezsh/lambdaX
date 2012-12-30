@@ -26,28 +26,23 @@ class _Return(object):
 
 class _Partial(object):
     "Pickle-able!"
-    def __init__(self, callable, *args):
+    def __init__(self, callable):
         self._callable = callable
-        self._args = args
 
     def __call__(self, *args):
-        args = self._args + args
         return self._callable(*args)
 
     def __hash__(self):
-        return hash(self._callable) + hash(self._args)
+        return hash(self._callable)
 
     def __repr__(self):
-        c = repr(self._callable) if self._callable.__class__.__name__=='_X' else self._callable.__name__
-        if self._args:
-            return '%s(%s)'%(c, self._args)
-        else:
-            return '%s'% c
+        return repr(self._callable)
 
 class _X(object):
     def __init__(self, func, *args_to_run):
         self.__func = func
         self.__args_to_run = tuple(args_to_run)
+        self._X_compl = (_SameX,)
 
     def __hash__(self):
         return hash(self.__func) + hash(self.__args_to_run)
@@ -60,14 +55,17 @@ class _X(object):
         #raise Exception("Deprecated!")
         return object.__reduce__(self)
 
+    def __arg_wrapper(self, arg):
+        return _Partial(arg) if type(arg) in self._X_compl else _Return(arg)
+
     def __apply_un_func(self, func ):
-        return _X(func, _Partial(self))
+        return type(self)(func, _Partial(self))
     def __apply_bin_func(self, func, arg ):
-        return _X(func, _Partial(self), _Return(arg))
+        return type(self)(func, _Partial(self), self.__arg_wrapper(arg))
     def __apply_rbin_func(self, func, arg ):
-        return _X(func, _Return(arg), _Partial(self))
+        return type(self)(func, self.__arg_wrapper(arg), _Partial(self))
     def __apply_multargs_func(self, func, *args ):
-        return _X(func, _Partial(self), *map(_Return,args))
+        return type(self)(func, _Partial(self), *map(_Return,args))
 
     def __call__(self, *args):
         for arg in args:
@@ -172,6 +170,11 @@ class _X(object):
         return 'X:%s%s' % (self.__func.__name__, self.__args_to_run)
 
 
-X = _X(identity, identity)
+class _SameX(_X):
+    def __init__(self, *args):
+        _X.__init__(self, *args)
+        self._X_compl = self._X_compl + (_X,)
 
+X = _X(identity, identity)
+SameX = _SameX(identity, identity)
 

@@ -37,6 +37,17 @@ These operations can be chained and composed:
     >>> (head(tail))([1,2,3])
     2
 
+Another feature is SameX, which is experimental (like everything here ;)
+
+    >>> map(X**SameX, range(10))
+    [1, 1, 4, 27, 256, 3125, 46656, 823543, 16777216, 387420489]
+
+    >>> (X+SameX+SameX)('ha')
+    'hahaha'
+
+    >>> (X + ' ' + SameX[::-1])('hello!')
+    'hello! !olleh'
+
 Some operations aren't as smooth:
 
     >>> map( X.upper._(), "use underscore for calling a function".split() )
