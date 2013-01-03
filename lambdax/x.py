@@ -1,9 +1,4 @@
-"""
-x.py
-
-Author: Erez Sh.
-Date  : 1/6/09
-"""
+"A lambda replacement which is shorter, pickle-able, and cooler."
 
 import operator
 
