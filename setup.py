@@ -11,8 +11,8 @@ setup(
     description = "A lambda replacement which is shorter, pickle-able, and cooler.",
     license = "MIT",
     keywords = "x lambda",
-    url = "https://github.com/erezsh/X",
-    download_url = "https://github.com/erezsh/X/tarball/master",
+    url = "https://github.com/erezsh/LambdaX",
+    download_url = "https://github.com/erezsh/LambdaX/tarball/master",
     long_description='''
     LambdaX is a composition class. It's a lambda replacement which is shorter, pickle-able, and cooler.
 
