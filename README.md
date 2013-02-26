@@ -10,6 +10,10 @@ So, evaluating (X+2) will result in an instance of X, that whenever called with 
     >>> map( X+2, [1, 2, 3] )
     [3, 4, 5]
 
+    >>> pow = X**X
+    >>> pow(2,8)
+    256
+
     >>> filter( X>0, [5, -3, 2, -1, 0, 13] )
     [5, 2, 13]
 
